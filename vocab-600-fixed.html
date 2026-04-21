@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>600 Từ Vựng C1-C2 | THPT & ĐGNL 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0e0c; --cream:#f5f0e8; --warm:#ede5d0;
+  --accent:#c8401a; --accent2:#2a6b4a; --gold:#b8963c;
+  --muted:#7a7268; --card:#faf7f2; --border:#d4c9b0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh}
+
+/* HEADER */
+header{background:var(--ink);color:var(--cream);padding:1.4rem 1.5rem 1.1rem;position:relative}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent2))}
+.hdr{max-width:980px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:.5rem}
+.hlabel{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem}
+header h1{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;line-height:1.1}
+header h1 em{color:var(--accent);font-style:normal}
+.hright{text-align:right;font-size:.75rem;color:#9a9080;line-height:1.7}
+.hright strong{color:var(--gold)}
+
+/* NAV TABS */
+.tabs{background:var(--warm);border-bottom:2px solid var(--border)}
+.tabs-inner{max-width:980px;margin:0 auto;padding:0 1.2rem;display:flex;gap:0}
+.tab{padding:.7rem 1.1rem;font-size:.83rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted);transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+
+/* CONTROLS */
+.controls{max-width:980px;margin:1rem auto .6rem;padding:0 1.2rem;display:flex;flex-wrap:wrap;gap:.55rem;align-items:center}
+.srch{flex:1;min-width:170px;position:relative}
+.srch input{width:100%;padding:.55rem .9rem .55rem 2.1rem;border:1.5px solid var(--border);border-radius:6px;background:var(--card);font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--ink);outline:none;transition:border-color .2s}
+.srch input:focus{border-color:var(--accent)}
+.srch::before{content:'🔍';position:absolute;left:.65rem;top:50%;transform:translateY(-55%);font-size:.75rem;pointer-events:none}
+.btn{padding:.48rem .9rem;border:1.5px solid var(--border);border-radius:6px;background:var(--card);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .15s;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.btn-r{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-r:hover{background:#a53315;border-color:#a53315;color:#fff}
+.btn-g{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+.btn-g:hover{background:#1e5237;border-color:#1e5237;color:#fff}
+
+/* STATS */
+.stats{max-width:980px;margin:0 auto .8rem;padding:0 1.2rem;display:flex;gap:1.2rem;align-items:center;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted)}
+.stats strong{color:var(--ink)}
+.pbar{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;min-width:60px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:2px;transition:width .3s}
+
+/* ===== FLASHCARD MODE ===== */
+#m-flash{display:block}
+.flash-wrap{max-width:560px;margin:0 auto;padding:0 1.2rem 3rem}
+.flash-counter{text-align:center;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);margin:.8rem 0 .5rem}
+.flash-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:14px;
+  min-height:280px;cursor:pointer;perspective:1000px;margin-bottom:1rem;
+  box-shadow:0 4px 24px rgba(15,14,12,.09);
+  position:relative;
+}
+.flash-inner{
+  width:100%;height:100%;min-height:280px;
+  position:relative;transform-style:preserve-3d;
+  transition:transform .45s cubic-bezier(.4,0,.2,1);
+}
+.flash-card.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-face{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem 1.5rem;border-radius:13px;
+}
+.flash-front{background:var(--card)}
+.flash-back{background:var(--ink);color:var(--cream);transform:rotateY(180deg);border-radius:13px}
+.flash-word{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.6rem);font-weight:900;text-align:center;margin-bottom:.4rem}
+.flash-pos{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem}
+.flash-ipa{font-size:1rem;color:var(--muted);margin-bottom:.4rem}
+.flash-level{display:inline-block;padding:.2rem .7rem;border-radius:20px;font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.lv-c1{background:#e8f0eb;color:var(--accent2)}
+.lv-c2{background:#fdf0eb;color:var(--accent)}
+.lv-b{background:#fef8e7;color:var(--gold)}
+.flash-hint{font-size:.75rem;color:#9a9080;margin-top:1rem;font-style:italic}
+
+.flash-vi{font-size:1.15rem;font-weight:500;text-align:center;margin-bottom:.8rem;color:var(--cream)}
+.flash-syn-label{font-family:'Space Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:#a09080;margin-bottom:.25rem}
+.flash-syn{font-size:.82rem;color:#d4c9b0;text-align:center;margin-bottom:.6rem}
+.flash-ant{font-size:.82rem;color:#e09070;text-align:center}
+
+.flash-nav{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.8rem}
+.flash-rating{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap}
+.rbt{padding:.5rem 1.2rem;border-radius:8px;border:none;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s}
+.rbt-easy{background:#dcf0e3;color:var(--accent2)}
+.rbt-easy:hover{background:#c0e6cc}
+.rbt-hard{background:#fde8e0;color:var(--accent)}
+.rbt-hard:hover{background:#fbd0c2}
+.rbt-skip{background:var(--warm);color:var(--muted)}
+.rbt-skip:hover{background:var(--border)}
+
+/* ===== LIST MODE ===== */
+#m-list{display:none}
+.list-wrap{max-width:980px;margin:0 auto;padding:0 1.2rem 3rem}
+.list-grid{display:grid;gap:.45rem}
+.list-row{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:.65rem 1rem;display:grid;
+  grid-template-columns:2rem 1fr 1fr 3rem 1fr 3rem;
+  gap:.5rem;align-items:center;font-size:.83rem;
+  transition:background .12s;
+}
+.list-row:hover{background:var(--warm)}
+.list-num{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--muted)}
+.list-word{font-weight:600;font-family:'DM Sans',sans-serif}
+.list-vi{color:var(--muted);font-size:.8rem}
+.list-ipa{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--muted)}
+.list-syn{font-size:.75rem;color:var(--accent2)}
+.list-hdr{
+  background:var(--ink);color:var(--cream);border-radius:8px;
+  padding:.5rem 1rem;display:grid;
+  grid-template-columns:2rem 1fr 1fr 3rem 1fr 3rem;
+  gap:.5rem;font-family:'Space Mono',monospace;font-size:.65rem;
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;
+}
+.known-dot{width:10px;height:10px;border-radius:50%;background:var(--border);display:inline-block;cursor:pointer;transition:background .15s}
+.known-dot.yes{background:var(--accent2)}
+
+/* ===== QUIZ MODE ===== */
+#m-quiz{display:none}
+.quiz-wrap{max-width:580px;margin:0 auto;padding:0 1.2rem 3rem}
+.quiz-q{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:1.8rem 1.5rem;margin-bottom:1rem;text-align:center;box-shadow:0 2px 12px rgba(15,14,12,.07)}
+.quiz-label{font-family:'Space Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.8rem}
+.quiz-word{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;margin-bottom:.4rem}
+.quiz-ipa{font-size:.9rem;color:var(--muted);margin-bottom:.5rem}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.8rem}
+.qopt{padding:.9rem;border:1.5px solid var(--border);border-radius:8px;background:var(--card);font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;transition:all .15s;text-align:left;line-height:1.35}
+.qopt:hover:not(:disabled){border-color:var(--gold);background:var(--warm)}
+.qopt.correct{border-color:var(--accent2);background:#e8f5ee;color:var(--accent2);font-weight:600}
+.qopt.wrong{border-color:var(--accent);background:#fde8e0;color:var(--accent)}
+.qopt:disabled{cursor:default}
+.quiz-result{text-align:center;font-size:.9rem;min-height:1.4rem;font-weight:500;color:var(--accent2)}
+.quiz-result.bad{color:var(--accent)}
+.quiz-score{font-family:'Space Mono',monospace;font-size:.75rem;text-align:center;color:var(--muted);margin-bottom:.6rem}
+.quiz-score strong{color:var(--ink)}
+
+/* EMPTY */
+.empty{text-align:center;padding:4rem 2rem;color:var(--muted);font-style:italic}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .list-row,.list-hdr{grid-template-columns:1.5rem 1fr 1fr 2.5rem}
+  .list-ipa,.list-syn{display:none}
+  .quiz-opts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr">
+    <div>
+      <div class="hlabel">THPT Quốc Gia & ĐGNL 2026</div>
+      <h1><em>600</em> Từ Vựng Nâng Cao C1–C2</h1>
+    </div>
+    <div class="hright">
+      Cô Vũ Thị Mai Phương<br>
+      <strong id="known-count">0</strong> / <span id="total-count">600</span> đã thuộc
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tabs-inner">
+    <div class="tab on" onclick="switchMode('flash',this)">🃏 Flashcard</div>
+    <div class="tab" onclick="switchMode('list',this)">📋 Danh sách</div>
+    <div class="tab" onclick="switchMode('quiz',this)">✏️ Quiz</div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="srch">
+    <input type="text" id="search" placeholder="Tìm từ vựng..." oninput="applyFilters()">
+  </div>
+  <button class="btn on" onclick="filterLevel('all',this)">Tất cả</button>
+  <button class="btn" onclick="filterLevel('C1',this)">C1</button>
+  <button class="btn" onclick="filterLevel('C2',this)">C2</button>
+  <button class="btn" onclick="filterKnown('unknown',this)">Chưa thuộc</button>
+  <button class="btn" onclick="filterKnown('known',this)">Đã thuộc</button>
+  <button class="btn btn-r" onclick="shuffleWords()">🔀 Xáo trộn</button>
+  <button class="btn btn-g" onclick="resetKnown()">↺ Reset</button>
+</div>
+
+<div class="stats">
+  <span>Hiển thị: <strong id="showing">600</strong></span>
+  <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  <span>Tiến độ: <strong id="pct">0%</strong></span>
+</div>
+
+<!-- ===== FLASHCARD MODE ===== -->
+<div id="m-flash">
+  <div class="flash-wrap">
+    <div class="flash-counter" id="fc-counter">1 / 600</div>
+    <div class="flash-card" id="flashcard" onclick="flipCard()">
+      <div class="flash-inner" id="flash-inner">
+        <div class="flash-face flash-front" id="ff-front">
+          <div class="flash-pos" id="ff-pos"></div>
+          <div class="flash-word" id="ff-word">—</div>
+          <div class="flash-ipa" id="ff-ipa"></div>
+          <div id="ff-level"></div>
+          <div class="flash-hint">Nhấn để xem nghĩa</div>
+        </div>
+        <div class="flash-face flash-back" id="ff-back">
+          <div class="flash-vi" id="fb-vi"></div>
+          <div class="flash-syn-label">Từ đồng nghĩa</div>
+          <div class="flash-syn" id="fb-syn"></div>
+          <div class="flash-syn-label" style="margin-top:.5rem">Từ trái nghĩa</div>
+          <div class="flash-ant" id="fb-ant"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flash-nav">
+      <button class="btn" onclick="prevCard()">← Trước</button>
+      <button class="btn btn-r" onclick="flipCard()">↩ Lật thẻ</button>
+      <button class="btn" onclick="nextCard()">Tiếp →</button>
+    </div>
+    <div class="flash-rating">
+      <button class="rbt rbt-hard" onclick="rateCard(false)">✗ Chưa thuộc</button>
+      <button class="rbt rbt-skip" onclick="nextCard()">→ Bỏ qua</button>
+      <button class="rbt rbt-easy" onclick="rateCard(true)">✓ Đã thuộc</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LIST MODE ===== -->
+<div id="m-list">
+  <div class="list-wrap">
+    <div class="list-hdr">
+      <span>#</span><span>Từ vựng</span><span>Nghĩa</span><span>IPA</span><span>Đồng nghĩa</span><span>Cấp</span>
+    </div>
+    <div class="list-grid" id="list-grid"></div>
+  </div>
+</div>
+
+<!-- ===== QUIZ MODE ===== -->
+<div id="m-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-score">Đúng: <strong id="q-correct">0</strong> / <strong id="q-total">0</strong></div>
+    <div class="quiz-q">
+      <div class="quiz-label">Chọn nghĩa đúng của từ</div>
+      <div class="quiz-word" id="q-word">—</div>
+      <div class="quiz-ipa" id="q-ipa"></div>
+      <div id="q-pos" style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem"></div>
+    </div>
+    <div class="quiz-opts" id="q-opts"></div>
+    <div class="quiz-result" id="q-result"></div>
+    <div style="text-align:center;margin-top:.8rem">
+      <button class="btn btn-r" id="q-next" onclick="nextQuiz()" style="display:none">Câu tiếp →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const RAW = [
+[1,"address","giải quyết","v","/əˈdres/","C1","deal with, tackle",""],
+[2,"beautify","làm đẹp, tô điểm","v","/ˈbjuːtɪfaɪ/","C1","adorn, grace","spoil, disfigure"],
+[3,"differentiate","phân biệt","v","/ˌdɪfəˈrenʃieɪt/","C1","distinguish",""],
+[4,"drive","thúc đẩy","v","/draɪv/","C1","force, compel",""],
+[5,"gratification","sự hài lòng, thỏa mãn","n","/ˌɡrætɪfɪˈkeɪʃn/","C1","satisfaction, pleasure","dissatisfaction, frustration"],
+[6,"impulsive","bốc đồng, hấp tấp","adj","/ɪmˈpʌlsɪv/","C2","rash, impetuous","thoughtful"],
+[7,"inconsiderate","thiếu chu đáo, thiếu suy nghĩ","adj","/ˌɪnkənˈsɪdərət/","C1","thoughtless, selfish","considerate, thoughtful"],
+[8,"innovative","sáng tạo, đổi mới","adj","/ˈɪnəvətɪv/","C1","creative, inventive",""],
+[9,"irrigation","sự tưới tiêu","n","/ˌɪrɪˈɡeɪʃn/","C2","",""],
+[10,"mindfulness","sự chánh niệm, sự lưu tâm","n","/ˈmaɪndfləs/","C1","",""],
+[11,"necessity","nhu cầu thiết yếu","n","/nəˈsesəti/","C1","",""],
+[12,"repetitive","lặp đi lặp lại","adj","/rɪˈpetətɪv/","C1","repetitious",""],
+[13,"replicate","sao chép","v","/ˈreplɪkeɪt/","C1","copy, duplicate",""],
+[14,"restrictive","hạn chế","adj","/rɪˈstrɪktɪv/","C2","",""],
+[15,"self-esteem","lòng tự trọng, tự tôn","n","/ˌself ɪˈstiːm/","C1","self-worth, self-confidence","self-doubt"],
+[16,"stable","ổn định","adj","/ˈsteɪbl/","C1","secure, steady","unstable, unsteady, volatile"],
+[17,"tedious","nhàm chán (do kéo dài, lặp đi lặp lại)","adj","/ˈtiːdiəs/","C1","monotonous, boring","interesting, exciting"],
+[18,"unaffordable","quá đắt, không đủ khả năng chi trả","adj","/ˌʌnəˈfɔːdəbl/","C1","expensive, costly","affordable, cheap"],
+[19,"urge","sự thôi thúc, ham muốn","n","/ɜːrdʒ/","C2","desire, impulse",""],
+[20,"adaptability","khả năng thích nghi","n","/əˌdæptəˈbɪləti/","C1","flexibility",""],
+[21,"cooperation","sự hợp tác","n","/kəʊˌɒpəˈreɪʃn/","C1","collaboration",""],
+[22,"designated","được chỉ định","adj","/ˈdezɪɡneɪtɪd/","C1","","undesignated"],
+[23,"diplomacy","ngoại giao","n","/dɪˈpləʊməsi/","C2","",""],
+[24,"drawback","hạn chế, nhược điểm","n","/ˈdrɔːbæk/","C1","disadvantage","advantage, benefit"],
+[25,"employability","khả năng có việc làm","n","/ɪmˌplɔɪəˈbɪləti/","C1","",""],
+[26,"impose","áp đặt","v","/ɪmˈpəʊz/","C1","force",""],
+[27,"inconvenience","sự bất tiện","n","/ˌɪnkənˈviːniəns/","C1","annoyance","convenience, comfort"],
+[28,"navigate","xử lý, vượt qua (khó khăn…)","v","/ˈnævɪɡeɪt/","C1","",""],
+[29,"openness","sự cởi mở","n","/ˈəʊpənnəs/","C1","",""],
+[30,"outweigh","lớn hơn, quan trọng hơn","v","/ˌaʊtˈweɪ/","C1","surpass, overshadow",""],
+[31,"stereotype","khuôn mẫu","n","/ˈsteriətaɪp/","C1","",""],
+[32,"flawless","hoàn hảo, không tì vết","adj","/ˈflɔːləs/","C2","perfect, impeccable","flawed, imperfect"],
+[33,"idealised","được lý tưởng hóa","adj","/aɪˈdiːəlaɪzd/","C1","",""],
+[34,"insecure","thiếu tự tin, bất an","adj","/ˌɪnsɪˈkjʊər/","C1","unconfident","confident, secure"],
+[35,"opt","lựa chọn","v","/ɒpt/","C1","choose, select","reject"],
+[36,"perspective","góc nhìn, quan điểm","n","/pəˈspektɪv/","C1","viewpoint, outlook",""],
+[37,"self-esteem","lòng tự trọng, tự tôn","n","/ˌself ɪˈstiːm/","C1","self-respect",""],
+[38,"undermine","làm suy yếu","v","/ˌʌndəˈmaɪn/","C1","weaken","strengthen, enhance, reinforce"],
+[39,"collective","tập thể, chung","adj","/kəˈlektɪv/","C1","joint","individual, separate"],
+[40,"commercialism","chủ nghĩa thương mại","n","/kəˈmɜːʃəlɪzəm/","C1","",""],
+[41,"enforce","thi hành, thực thi (luật, quy định)","v","/ɪnˈfɔːs/","C1","implement, impose","remove"],
+[42,"engagement","sự tham gia","n","/ɪnˈɡeɪdʒmənt/","C1","involvement, participation",""],
+[43,"enhance","nâng cao, cải thiện","v","/ɪnˈhɑːns/","C1","improve, boost, increase","diminish, weaken, reduce"],
+[44,"impose","áp đặt","v","/ɪmˈpəʊz/","C1","enforce","remove"],
+[45,"infrastructure","cơ sở hạ tầng","n","/ˈɪnfrəstrʌktʃə(r)/","C1","",""],
+[46,"obsolete","lỗi thời, lạc hậu","adj","/ˈɒbsəliːt/","C1","outdated, old-fashioned","modern, up-to-date, relevant"],
+[47,"overshadow","làm lu mờ","v","/ˌəʊvəˈʃædəʊ/","C1","eclipse, outshine",""],
+[48,"reenact","tái hiện","v","/ˌriːˈnækt/","C1","",""],
+[49,"respiratory","thuộc về hô hấp","adj","/rəˈspɪrətri/","C1","",""],
+[50,"restrict","hạn chế, giới hạn","v","/rɪˈstrɪkt/","C1","limit",""],
+[51,"revive","hồi sinh","v","/rɪˈvaɪv/","C1","",""],
+[52,"significance","ý nghĩa, tầm quan trọng","n","/sɪɡˈnɪfɪkəns/","C1","importance, meaning","insignificance, unimportance"],
+[53,"spark","châm ngòi, khơi dậy","v","/spɑːk/","C1","trigger",""],
+[55,"subsidy","tiền trợ cấp","n","/ˈsʌbsɪdi/","C1","",""],
+[56,"urbanisation","sự đô thị hóa","n","/ˌɜːbənaɪˈzeɪʃn/","C1","",""],
+[57,"vibrant","sôi động, rực rỡ","adj","/ˈvaɪbrənt/","C1","exciting, brilliant lively","dull"],
+[58,"destructive","có sức phá hoại, tàn phá","adj","/dɪˈstrʌktɪv/","C1","damaging, devastating","beneficial, harmless"],
+[59,"devastating","có tính tàn phá, phá hủy","adj","/ˈdevəsteɪtɪŋ/","C2","disastrous, destructive","beneficial, harmless"],
+[60,"open-minded","cởi mở","adj","/ˌəʊpənˈmaɪndɪd/","C1","tolerant, broad-minded","narrow-minded, intolerant"],
+[61,"bypass","bỏ qua; đi đường vòng; tránh cái gì","v","/ˈbaɪpɑːs/","C1","avoid",""],
+[62,"competence","năng lực, khả năng","n","/ˈkɒmpɪtəns/","C1","capability, ability","incompetence, inability"],
+[63,"compulsive","không thể cưỡng lại","adj","/kəmˈpʌlsɪv/","C2","",""],
+[64,"consistency","sự nhất quán, sự kiên định","n","/kənˈsɪstənsi/","C1","steadfastness","inconsistency"],
+[65,"emergence","sự xuất hiện, nổi lên","n","/ɪˈmɜːdʒəns/","C1","appearance, rise","disappearance"],
+[66,"enemy","kẻ thù","n","/ˈenəmi/","B1","foe, adversary","friend, ally"],
+[67,"ethically","về mặt đạo đức, có đạo đức","adv","/ˈeθɪkli/","C1","morally","unethically, immorally"],
+[68,"evolve","phát triển","v","/ɪˈvɒlv/","C1","develop, grow",""],
+[69,"frustrated","thất vọng, chán nản, bực bội","adj","/frʌˈstreɪtɪd/","C1","annoyed, angry",""],
+[70,"genuine","chân thật; thật","adj","/ˈdʒenjuɪn/","B2","sincere, authentic, real","insincere, fake, counterfeit"],
+[71,"ignorance","sự thiếu hiểu biết","n","/ˈɪɡnərəns/","C2","","knowledge"],
+[72,"impose","áp đặt","v","/ɪmˈpəʊz/","C1","force",""],
+[73,"infrastructure","cơ sở hạ tầng","n","/ˈɪnfrəstrʌktʃər/","C1","",""],
+[74,"innovation","sự đổi mới, sự sáng tạo","n","/ˌɪnəˈveɪʃn/","C1","creativity, novelty",""],
+[75,"innovative","sáng tạo, đổi mới","adj","/ˈɪnəvətɪv/","C1","novel, creative","conventional"],
+[76,"plagiarism","sự đạo văn","n","/ˈpleɪdʒərɪzəm/","C1","",""],
+[77,"positive","tích cực","adj","/ˈpɒzətɪv/","B1","optimistic","negative, pessimistic"],
+[78,"proceeds","tiền thu được (từ việc bán hàng, sự kiện...)","n","/ˈprəʊsiːdz/","C1","",""],
+[79,"prompt","lời nhắc, gợi ý","n","/prɒmpt/","C1","cue, hint",""],
+[80,"reliance","sự phụ thuộc","n","/rɪˈlaɪəns/","C1","dependence",""],
+[81,"resistance","sự kháng cự","n","/rɪˈzɪstəns/","C1","opposition, defiance",""],
+[82,"scam","trò lừa đảo","n","/skæm/","C1","",""],
+[83,"scammer","kẻ lừa đảo","n","/ˈskæmər/","C1","",""],
+[84,"subsidy","tiền trợ cấp","n","/ˈsʌbsɪdi/","C1","",""],
+[85,"sustainability","sự bền vững","n","/səˌsteɪnəˈbɪləti/","C2","","unsustainability"],
+[86,"undeniably","không thể phủ nhận","adv","/ˌʌndɪˈnaɪəbli/","C1","undoubtedly, definitely",""],
+[87,"unimaginable","không thể tưởng tượng được","adj","/ˌʌnɪˈmædʒɪnəbl/","C1","inconceivable","imaginable, conceivable"],
+[88,"verify","xác minh, kiểm chứng","v","/ˈverɪfaɪ/","C1","confirm, authenticate",""],
+[89,"vulnerable","dễ bị tổn thương, tấn công, ảnh hưởng","adj","/ˈvʌlnərəbl/","C1","susceptible, fragile","protected, invulnerable"],
+[90,"wisely","một cách khôn ngoan","adv","/ˈwaɪzli/","C1","prudently, judiciously","foolishly, unwisely"],
+[91,"contaminate","làm ô nhiễm","v","/kənˈtæmɪneɪt/","C1","pollute","clean, purify"],
+[92,"counteract","chống lại","v","/ˌkaʊntəˈækt/","C1","",""],
+[93,"cyberbully","bắt nạt qua mạng internet","v","/ˈsaɪbəˌbʊli/","C1","",""],
+[94,"decompose","phân hủy","v","/ˌdiːkəmˈpəʊz/","C1","decay",""],
+[95,"degradation","sự suy thoái, sự hủy hoại","n","/ˌdeɡrəˈdeɪʃn/","C1","","improvement"],
+[96,"dumping","sự xả thải, sự đổ bỏ (bừa bãi)","n","/ˈdʌmpɪŋ/","C1","",""],
+[97,"dweller","cư dân","n","/ˈdwelər/","C1","inhabitant",""],
+[98,"eco-conscious","có ý thức bảo vệ môi trường","adj","/ˌiːkəʊˈkɒnʃəs/","C1","",""],
+[99,"enact","ban hành (luật), đưa vào thực thi","v","/ɪˈnækt/","C1","",""],
+[100,"escalation","sự leo thang (căng thẳng, bạo lực...)","n","/ˌeskəˈleɪʃ(ə)n/","C1","intensification",""],
+[101,"ever-changing","luôn thay đổi","adj","/ˌevəˈtʃeɪndʒɪŋ/","C1","","static, unchanging"],
+[102,"garment","áo quần, trang phục","n","/ˈɡɑːmənt/","C1","clothes",""],
+[103,"infrastructure","cơ sở hạ tầng","n","/ˌɪnfrəˈstrʌktʃə/","C1","",""],
+[104,"innovation","sự đổi mới, sáng tạo","n","/ˌɪnə(ʊ)ˈveɪʃn/","C1","",""],
+[105,"instability","sự bất ổn, không ổn định","n","/ˌɪnstəˈbɪlɪti/","C1","","stability"],
+[106,"integration","sự hội nhập, tích hợp","n","/ˌɪntɪˈɡreɪʃn/","C1","",""],
+[107,"maritime","thuộc về biển, hàng hải","adj","/ˈmærɪtaɪm/","C1","",""],
+[108,"microplastic","vi nhựa (những hạt nhựa rất nhỏ gây ô nhiễm)","n","/ˌmaɪkrəʊˈplæstɪk/","C1","",""],
+[109,"neglect","bỏ mặc, sự bỏ bê","v","/nɪˈɡlekt/","C1","ignore",""],
+[110,"opaque","mờ đục, không rõ ràng","adj","/əʊˈpeɪk/","C1","unclear","transparent"],
+[111,"perpetuate","duy trì, làm cho tồn tại mãi","v","/pəˈpetʃʊeɪt/","C1","sustain, maintain","halt, end"],
+[112,"persistence","sự kiên trì, sự dai dẳng","n","/pəˈsɪst(ə)ns/","C2","",""],
+[113,"pledge","cam kết, hứa một cách trang trọng","v","/pledʒ/","C1","promise",""],
+[114,"prolonged","kéo dài","adj","/prəˈlɒŋd/","C1","extended",""],
+[115,"repurpose","tái sử dụng cho mục đích khác","v","/ˌriːˈpɜːpəs/","C1","",""],
+[116,"resilience","khả năng phục hồi, sự kiên cường","n","/rɪˈzɪliəns/","C2","","fragility"],
+[117,"restoration","sự phục hồi, khôi phục","n","/ˌrestəˈreɪʃn/","C1","",""],
+[118,"shift","chuyển đổi, thay đổi","v","/ʃɪft/","C1","change",""],
+[119,"simplicity","sự đơn giản, giản dị","n","/sɪmˈplɪsəti/","C1","","complexity"],
+[120,"supply chain","chuỗi cung ứng","n","/səˈplaɪ tʃeɪn/","C1","",""],
+[121,"synthetic","tổng hợp, nhân tạo","adj","/sɪnˈθetɪk/","C1","artificial, man-made","natural"],
+[122,"transformation","sự biến đổi, chuyển đổi","n","/ˌtrænsˈfəˈmeɪʃn/","C1","change",""],
+[123,"transparency","tính minh bạch, rõ ràng","n","/trænsˈpærənsi/","C1","clarity","opacity"],
+[124,"uneven","không đều, không đồng đều","adj","/ʌnˈiːvn/","C2","","even"],
+[125,"upcycling","tái chế sáng tạo, tái chế nâng cấp","n","/ˌʌpˈsaɪklɪŋ/","C1","",""],
+[130,"validation","sự xác nhận, phê chuẩn","n","/ˌvæliˈdeɪʃn/","C1","confirmation",""],
+[131,"self-esteem","lòng tự trọng","n","/ˌself ɪˈstiːm/","C1","self-worth",""],
+[132,"captivity","tình trạng bị giam cầm","n","/kæpˈtɪvəti/","C1","confinement, imprisonment","freedom"],
+[133,"aggression","sự hung hăng, hiếu chiến","n","/əˈɡreʃn/","C1","hostility","friendliness"],
+[134,"sake","lợi ích","n","/seɪk/","C1","benefit",""],
+[135,"replicate","tái tạo, sao chép, mô phỏng","v","/ˈrep.lɪ.keɪt/","C1","copy, duplicate",""],
+[136,"distress","nỗi đau khổ, phiền muộn","n","/dɪˈstres/","C1","consternation","comfort, relief"],
+[137,"intensify","tăng cường, làm mạnh thêm","v","/ɪnˈten.sɪ.faɪ/","C1","escalate, heighten","diminish, weaken"],
+[138,"plague","gây phiền toái","v","/pleɪɡ/","C1","trouble",""],
+[139,"procrastination","sự trì hoãn","n","/prəˌkræs.tɪˈneɪ.ʃən/","C1","",""],
+[140,"perfectionism","chủ nghĩa hoàn hảo","n","/pəˈfek.ʃən.ɪ.zəm/","C1","",""],
+[141,"exacerbate","làm trầm trọng thêm","v","/ɪɡˈzæs.ə.beɪt/","C1","worsen, aggravate",""],
+[142,"internalise","tiếp thu, làm cho thành tư tưởng cá nhân","v","/ɪnˈtɜː.nəl.aɪz/","C1","",""],
+[143,"accountability","trách nhiệm (giải trình)","n","/əˌkaʊn.təˈbɪl.ə.ti/","C1","",""],
+[144,"avoidance","sự né tránh","n","/əˈvɔɪ.dəns/","C1","evasion",""],
+[145,"self-compassion","lòng từ bi với bản thân, lòng trắc ẩn với bản thân","n","/ˌself.kəmˈpæʃ.ən/","C1","",""],
+[146,"self-discipline","kỷ luật bản thân","n","/ˌself dɪsˈə.plɪn/","C2","",""],
+[147,"tedious","tẻ nhạt, chán ngắt","adj","/ˈtiː.di.əs/","C1","boring, dull","exciting"],
+[148,"moderate","điều độ, tiết chế","v","/ˈmɒd.ər.ət/","C1","",""],
+[149,"erode","xói mòn, bào mòn","v","/ɪˈrəʊd/","C2","",""],
+[150,"engaging","thu hút, lôi cuốn","adj","/ɪnˈɡeɪ.dʒɪŋ/","C1","attractive, appealing","unattractive"],
+[151,"engagingly","một cách lôi cuốn","adv","/ɪnˈɡeɪ.dʒɪŋ.li/","C1","attractively","unattractively"],
+[155,"architectural","thuộc kiến trúc","adj","/ˌɑːkɪˈtektʃərəl/","C1","structural, design-based",""],
+[156,"auditorium","khán phòng","n","/ˌɔːdɪˈtɔːriəm/","C2","hall",""],
+[157,"blend","pha trộn, kết hợp","v","/blend/","C1","mix, combine","separate"],
+[158,"cognitive","liên quan đến nhận thức","adj","/ˈkɒɡnətɪv/","C1","mental, intellectual",""],
+[159,"dependence","sự phụ thuộc","n","/dɪˈpendəns/","C1","reliance","independence"],
+[160,"drainage","hệ thống thoát nước","n","/ˈdreɪnɪdʒ/","C1","outflow system",""],
+[161,"ease","làm dịu, giảm bớt","v","/iːz/","C1","relieve, lessen","worsen"],
+[162,"embark","bắt đầu (hành trình, dự án)","v","/ɪmˈbɑːk/","C1","begin, commence",""],
+[163,"empower","trao quyền, làm cho ai đó mạnh hơn","v","/ɪmˈpaʊə(r)/","C1","authorize, enable","oppress, weaken"],
+[164,"excessively","quá mức","adv","/ɪkˈsesɪvli/","C1","overly, extremely","moderately"],
+[165,"filter","lọc","v","/ˈfɪltə(r)/","C1","purify, refine",""],
+[166,"humble","khiêm tốn, giản dị","adj","/ˈhʌmbl/","C1","modest, unassuming","arrogant, proud"],
+[167,"interpretation","sự diễn giải","n","/ɪnˌtɜːprəˈteɪʃn/","C1","explanation, analysis",""],
+[168,"phenomenon","hiện tượng","n","/fəˈnɒmɪnən/","C1","event, occurrence",""],
+[169,"practicality","tính thực tế","n","/ˌpræktɪˈkæləti/","C1","usefulness","impracticality"],
+[170,"redemption","sự chuộc lỗi, cứu rỗi","n","/rɪˈdempʃn/","C2","atonement, salvation","damnation"],
+[171,"renewal","sự đổi mới, phục hồi","n","/rɪˈnjuːəl/","C1","restoration, revival","decay, expiration"],
+[172,"resilience","khả năng phục hồi","n","/rɪˈzɪliəns/","C2","toughness, adaptability","fragility"],
+[173,"simplicity","sự đơn giản","n","/sɪmˈplɪsəti/","C1","plainness","complexity"],
+[174,"streak","chạy vụt qua, để lại vệt","v","/striːk/","C1","dash, race, flash","crawl, linger"],
+[175,"stride","sải bước","n","/straɪd/","C1","",""],
+[176,"thoughtfully","một cách sâu sắc","adv","/ˈθɔːtfəli/","C1","reflectively",""],
+[178,"abrupt","đột ngột","adj","/əˈbrʌpt/","C1","sudden","gradual"],
+[179,"apprenticeship","thời kỳ học việc","n","/əˈprentɪʃɪp/","C1","traineeship","mastery"],
+[180,"catastrophe","thảm họa","n","/kəˈtæstrəfi/","C2","disaster","blessing"],
+[181,"catastrophic","thảm khốc","adj","/ˌkætəˈstrɒfɪk/","C1","disastrous",""],
+[182,"coherence","tính mạch lạc","n","/kəʊˈhɪərəns/","C2","","incoherence"],
+[183,"competent","có năng lực","adj","/ˈkɒmpɪtənt/","C1","capable","incompetent"],
+[184,"determine","xác định","v","/dɪˈtɜːmɪn/","C1","decide","hesitate"],
+[185,"dwindling","suy giảm","adj","/ˈdwɪndlɪŋ/","C1","decreasing","increasing"],
+[186,"electrify","điện khí hóa","v","/ɪˈlektrɪfaɪ/","C1","",""],
+[187,"finite","hữu hạn","adj","/ˈfaɪnaɪt/","C1","limited","infinite"],
+[188,"grid","lưới điện","n","/ɡrɪd/","C1","",""],
+[189,"harsh","khắc nghiệt","adj","/hɑːʃ/","C1","severe","mild"],
+[190,"inappropriate","không phù hợp","adj","/ˌɪnəˈprəʊpriət/","C1","unsuitable","appropriate"],
+[191,"industrialisation","công nghiệp hóa","n","/ɪnˌdʌstriəlaɪˈzeɪʃn/","C1","","deindustrialisation"],
+[192,"instability","sự bất ổn","n","/ˌɪnstəˈbɪləti/","C1","insecurity","stability"],
+[193,"intermittency","tính gián đoạn","n","/ˌɪntəˈmɪtənsi/","C1","irregularity","continuity"],
+[194,"memorably","một cách đáng nhớ","adv","/ˈmemrəbli/","C1","unforgettably","forgettably"],
+[195,"openly","công khai","adv","/ˈəʊpənli/","C1","publicly","secretly"],
+[196,"plague","dịch bệnh, quấy rầy","n","/pleɪɡ/","C1","afflict","relieve"],
+[197,"premature","sớm, non nớt","adj","/ˈpremətʃə(r)/","C1","early","delayed"],
+[198,"prominent","nổi bật","adj","/ˈprɒmɪnənt/","C1","famous","unknown"],
+[199,"relentless","không ngừng nghỉ","adj","/rɪˈlentləs/","C2","persistent",""],
+[200,"scalability","khả năng mở rộng","n","/ˌskeɪləˈbɪləti/","C1","expandability","limitation"],
+[201,"scattered","rải rác","adj","/ˈskætəd/","C1","dispersed","concentrated"],
+[202,"self-discipline","tính tự giác","n","/ˌself ˈdɪsəplɪn/","C1","self-control","self-indulgence"],
+[203,"staggering","kinh ngạc","adj","/ˈstæɡərɪŋ/","C1","astonishing","ordinary"],
+[204,"supercharge","tăng cường mạnh","v","/ˈsuːpətʃɑːdʒ/","C1","boost","weaken"],
+[205,"tout","quảng cáo rầm rộ","v","/taʊt/","C1","promote","conceal"],
+[206,"trillion","nghìn tỷ","n","/ˈtrɪljən/","C1","",""],
+[207,"uniformity","sự đồng nhất","n","/ˌjuːnɪˈfɔːməti/","C1","consistency","diversity"],
+[208,"unprecedented","chưa từng có","adj","/ʌnˈpresɪdəntɪd/","C1","unparalleled","ordinary"],
+[209,"unviable","không khả thi","adj","/ʌnˈvaɪəbl/","C2","impractical","viable"],
+[210,"viable","khả thi","adj","/ˈvaɪəbl/","C1","feasible","unviable"],
+[211,"volatile","biến động","adj","/ˈvɒlətaɪl/","C1","unstable","stable"],
+[212,"accelerate","tăng tốc, thúc đẩy","v","/əkˈseləreɪt/","C1","speed up","decelerate, slow down"],
+[213,"aspiration","khát vọng, nguyện vọng","n","/ˌæspəˈreɪʃn/","C1","ambition",""],
+[214,"breadwinner","trụ cột gia đình","n","/ˈbredwɪnə(r)/","C1","",""],
+[215,"coexist","cùng tồn tại","v","/kəʊɪɡˈzɪst/","C1","",""],
+[216,"contradiction","sự mâu thuẫn","n","/ˌkɒntrəˈdɪkʃn/","C2","",""],
+[217,"converge","hội tụ, đồng quy","v","/kənˈvɜːdʒ/","C1","","diverge"],
+[218,"correspondence","thư từ","n","/ˌkɒrəˈspɒndəns/","C1","",""],
+[219,"counselling","sự tư vấn","n","/ˈkaʊnsəlɪŋ/","C2","",""],
+[220,"decisively","một cách dứt khoát, quả quyết","adv","/dɪˈsaɪsɪvli/","C2","","indecisively"],
+[221,"dignity","phẩm giá, sự cao quý","n","/ˈdɪɡnəti/","C1","",""],
+[222,"disapproval","sự không tán thành, sự phản đối","n","/ˌdɪsəˈpruːvl/","C1","disapprobation, objection","approval, approbation"],
+[223,"discard","vứt bỏ","v","/dɪˈskɑːd/","C1","throw away, dispose of","keep, retain"],
+[224,"disrupt","làm gián đoạn, phá vỡ","v","/dɪsˈrʌpt/","C1","",""],
+[225,"distinct","khác biệt, riêng biệt","adj","/dɪˈstɪŋkt/","C1","different","similar, homogeneous"],
+[226,"dominate","chiếm ưu thế, nổi bật","v","/ˈdɒmɪneɪt/","C1","",""],
+[227,"encounter","chạm trán, gặp phải","v","/ɪnˈkaʊntə(r)/","C1","face",""],
+[228,"equity","sự công bằng","n","/ˈekwəti/","C1","fairness","inequality, unfairness"],
+[229,"exclusion","sự loại trừ","n","/ɪkˈskluːʒn/","C1","","inclusion"],
+[230,"exclusivity","sự độc quyền","n","/ˌekskluːˈsɪvəti/","C1","",""],
+[231,"fair-minded","công bằng","adj","/ˌfeəˈmaɪndɪd/","C1","fair, equitable","unfair"],
+[232,"flee","chạy trốn","v","/fliː/","C1","",""],
+[233,"fragile","yếu đuối, mong manh, dễ bị tổn thương (thể chất, tinh thần)","adj","/ˈfrædʒaɪl/","C1","frail, vulnerable","strong"],
+[234,"hardship","sự gian khổ, khó khăn","n","/ˈhɑːdʃɪp/","C1","",""],
+[235,"homogeneity","sự đồng nhất","n","/ˌhəʊməʊdʒəˈniːəti/","C1","uniformity, sameness","heterogeneity, diversity"],
+[236,"impersonal","thiếu tính cá nhân, lạnh lùng, vô cảm","adj","/ɪmˈpɜːsənl/","C1","",""],
+[237,"integration","sự hội nhập, sự hòa nhập","n","/ˌɪntɪˈɡreɪʃn/","C1","",""],
+[238,"intervention","sự can thiệp (mang hàm ý tích cực)","n","/ˌɪntəˈvenʃn/","C1","",""],
+[239,"irreversible","không thể đảo ngược, không thể thay đổi","adj","/ɪˌrɪˈvɜːsəbl/","C2","","reversible"],
+[240,"isolation","sự cô lập","n","/ˌaɪsəˈleɪʃn/","C1","",""],
+[241,"like-minded","cùng chí hướng, cùng suy nghĩ","adj","/ˌlaɪkˈmaɪndɪd/","C1","",""],
+[242,"long-standing","lâu đời, lâu năm","adj","/ˌlɒŋˈstændɪŋ/","C1","",""],
+[243,"open-minded","cởi mở","adj","/ˌəʊpənˈmaɪndɪd/","C1","broad-minded, tolerant","narrow-minded"],
+[244,"overriding","quan trọng hơn hết","adj","/ˌəʊvəˈraɪdɪŋ/","C1","primary, paramount, dominant","insignificant, minor"],
+[245,"permanence","sự vĩnh viễn, lâu dài","n","/ˈpɜːmənəns/","C1","","impermanence"],
+[246,"perspective","quan điểm, góc nhìn","n","/pəˈspektɪv/","C1","viewpoint, outlook",""],
+[247,"precarious","bấp bênh, không chắc chắn","adj","/prɪˈkeəriəs/","C1","uncertain, insecure","certain, secure"],
+[248,"prosperity","sự thịnh vượng","n","/prɒsˈperəti/","C1","affluence, wealth","poverty"],
+[249,"relentless","không ngừng","adj","/rɪˈlentləs/","C1","unrelenting","relenting"],
+[250,"resilience","khả năng phục hồi","n","/rɪˈzɪliəns/","C2","",""],
+[251,"reverse","đảo ngược","v","/rɪˈvɜːs/","C1","","retain"],
+[252,"sensitivity","sự nhạy cảm (khả năng hiểu cảm xúc của người khác)","n","/ˌsensəˈtɪvəti/","C1","","insensitivity"],
+[253,"sincerity","sự chân thành","n","/sɪnˈserəti/","C2","honesty, genuineness","insincerity, dishonesty"],
+[254,"solidarity","sự đoàn kết","n","/ˌsɒlɪˈdærəti/","C1","unity","divisiveness"],
+[255,"stereotype","khuôn mẫu","n","/ˈsteriətaɪp/","C1","",""],
+[256,"stigma","sự kỳ thị","n","/ˈstɪɡmə/","C1","",""],
+[257,"tangible","hữu hình","adj","/ˈtændʒəbl/","C2","","intangible"],
+[258,"unfold","hé lộ","v","/ʌnˈfəʊld/","C1","reveal, disclose","conceal, hide"],
+[259,"uniformity","sự đồng nhất","n","/ˌjuːnɪˈfɔːməti/","C1","sameness, similarity, homogeneity","diversity, difference"],
+[260,"unite","đoàn kết, hợp nhất","v","/juˈnaɪt/","C1","unify, combine","separate, divide"],
+[261,"unnoticed","không bị nhận thấy, chú ý","adj","/ˌʌnˈnəʊtɪst/","C1","unobserved, unseen",""],
+[262,"vibrant","sôi động, đầy sức sống","adj","/ˈvaɪbrənt/","C1","lively, energetic, exciting","dull, boring"],
+[263,"vulnerability","sự dễ bị tổn thương (về thể chất, tinh thần)","n","/ˌvʌlnərəˈbɪləti/","C1","","invulnerability"],
+[264,"advancement","sự tiến bộ; sự thăng tiến (công việc)","n","/ədˈvɑːnsmənt/","C1","progress, development; promotion","regression, decline; demotion"],
+[265,"algorithm","thuật toán","n","/ˈælɡərɪðəm/","C2","",""],
+[266,"burden","gánh nặng","n","/ˈbɜːdn/","C1","",""],
+[267,"efficiency","sự hiệu quả","n","/ɪˈfɪʃnsi/","C1","","inefficiency"],
+[268,"empathy","sự đồng cảm","n","/ˈempəθi/","C2","",""],
+[269,"exclude","loại trừ, loại bỏ","v","/ɪkˈskluːd/","C1","",""],
+[270,"far-reaching","có tầm ảnh hưởng sâu rộng","adj","/ˌfɑːˈriːtʃɪŋ/","C1","",""],
+[271,"gratitude","lòng biết ơn","n","/ˈɡrætɪtjuːd/","C1","thankfulness, appreciation","ingratitude"],
+[272,"hesitation","sự do dự","n","/ˌhezɪˈteɪʃn/","C1","",""],
+[273,"hinder","cản trở, gây trở ngại","v","/ˈhɪndə(r)/","C1","hamper","help, facilitate"],
+[274,"hybrid","lai, kết hợp","adj","/ˈhaɪbrɪd/","C1","",""],
+[275,"influential","có ảnh hưởng","adj","/ˌɪnfluˈenʃl/","C1","",""],
+[276,"insufficient","không đủ","adj","/ˌɪnsəˈfɪʃnt/","C1","inadequate","sufficient, adequate"],
+[277,"domain","lĩnh vực","n","/dəˈmeɪn/","C1","field, area",""],
+[278,"dominant","thống trị, chiếm ưu thế","adj","/ˈdɒmɪnənt/","C1","predominant",""],
+[279,"double helix","chuỗi xoắn kép của DNA","n","/ˌdʌbl ˈhiːlɪks/","C1","",""],
+[280,"neglect","sao nhãng, bỏ bê, không chú ý","v","/nɪˈɡlekt/","C1","disregard, ignore, overlook","notice, consider"],
+[281,"oppressive","ngột ngạt, nặng nề","adj","/əˈpresɪv/","C1","",""],
+[282,"overestimate","đánh giá quá cao","v","/ˌəʊvərˈestɪmeɪt/","C1","overrate, overvalue","underestimate, undervalue, underrate"],
+[283,"overlook","không chú ý tới, bỏ sót","v","/ˌəʊvəˈlʊk/","C2","disregard, ignore, neglect","notice, consider"],
+[284,"overwhelming","áp đảo, choáng ngợp","adj","/ˌəʊvəˈwelmɪŋ/","C1","",""],
+[285,"persist","tiếp tục tồn tại, kéo dài","v","/pəˈsɪst/","C2","last, continue",""],
+[286,"phenomenon","hiện tượng","n","/fəˈnɒmɪnən/","C1","",""],
+[287,"pioneer","người tiên phong","n","/ˌpaɪəˈnɪə(r)/","C2","trailblazer",""],
+[288,"restless","bồn chồn, không yên","adj","/ˈrestləs/","C1","restive",""],
+[289,"undervaluation","sự đánh giá thấp","n","/ˌʌndəˌvæljuˈeɪʃn/","C1","underestimation","overvaluation, overestimation"],
+[290,"untapped","chưa được khai thác","adj","/ʌnˈtæpt/","C1","",""],
+[291,"upkeep","sự bảo dưỡng, chi phí bảo dưỡng","n","/ˈʌpkiːp/","C2","maintenance",""],
+[292,"uprush","sự dâng lên, sự bùng phát (khí, nước, cảm xúc…)","n","/ˈʌprʌʃ/","C2","surge, outburst",""],
+[293,"visibility","mức độ được chú ý, được nhận diện, được biết đến","n","/ˌvɪzəˈbɪləti/","C1","",""],
+[294,"administration","sự quản lý, sự quản trị","n","/ədˌmɪnɪˈstreɪʃn/","C1","management",""],
+[295,"bias","sự thiên vị; thành kiến","n","/ˈbaɪəs/","C2","prejudice","impartiality, fairness"],
+[296,"comprehend","hiểu, lĩnh hội","v","/ˌkɒmprɪˈhend/","C1","understand, grasp",""],
+[297,"critical thinking","tư duy phản biện","n","/ˌkrɪtɪkl ˈθɪŋkɪŋ/","C1","",""],
+[298,"disinterest","sự thờ ơ, sự không quan tâm","n","/dɪsˈɪntrəst/","C1","indifference","interest"],
+[299,"disloyalty","sự không trung thành","n","/dɪsˈlɔɪəlti/","C1","","loyalty"],
+[300,"framework","khuôn khổ","n","/ˈfreɪmwɜːk/","C2","",""],
+[301,"censorship","sự kiểm duyệt","n","/ˈsensəʃɪp/","C1","",""],
+[302,"civility","sự lịch sự, nhã nhặn","n","/səˈvɪləti/","C1","politeness, courtesy","incivility, impoliteness, discourtesy"],
+[303,"dispute","cuộc tranh cãi, cuộc tranh luận","n","/dɪˈspjuːt/","C2","argument, disagreement","agreement, harmony"],
+[304,"distortion","sự bóp méo, sai lệch (sự thật)","n","/dɪˈstɔːʃn/","C1","misrepresentation",""],
+[305,"disturbance","sự quấy rầy, sự xáo trộn","n","/dɪˈstɜː.bəns/","C1","",""],
+[306,"exaggeration","sự phóng đại","n","/ɪɡˌzædʒəˈreɪʃn/","C1","overstatement","understatement"],
+[307,"execute","thi hành, thực hiện","v","/ˈeksɪkjuːt/","C1","carry out",""],
+[308,"fleeting","thoáng qua, ngắn ngủi","adj","/ˈfliːtɪŋ/","C1","brief, momentary, ephemeral","lasting"],
+[309,"hazardous","nguy hiểm","adj","/ˈhæzədəs/","C1","dangerous, unsafe","safe, secure"],
+[310,"impulsiveness","sự bốc đồng","n","/ɪmˈpʌlsɪvnəs/","C1","impetuosity, rashness","caution"],
+[311,"inarticulate","không diễn đạt rõ ràng","adj","/ˌɪnɑːˈtɪkjələt/","C1","","articulate"],
+[312,"inherent","vốn có","adj","/ɪnˈherənt/","C2","inbuilt",""],
+[313,"multifaceted","nhiều khía cạnh","adj","/ˌmʌltɪˈfæsɪtɪd/","C1","complex, many-sided",""],
+[314,"obsession","nỗi ám ảnh","n","/əbˈseʃn/","C1","",""],
+[315,"paralyse","làm tê liệt","v","/ˈpærəlaɪz/","C1","",""],
+[316,"slang","tiếng lóng","n","/slæŋ/","C1","",""],
+[317,"subtle","tinh tế, khó nhận ra","adj","/ˈsʌtl/","C1","","obvious"],
+[318,"undervalue","đánh giá thấp","v","/ˌʌndəˈvæljuː/","C1","underestimate","overvalue"],
+[319,"unpredictability","tính khó đoán","n","/ˌʌnprɪˌdɪktəˈbɪləti/","C1","","predictability"],
+[320,"vulgar","thô tục, phản cảm","adj","/ˈvʌlɡə(r)/","C1","rude, crude","polite"],
+[321,"withdrawn","khép kín, thu mình","adj","/wɪðˈdrɔːn/","C2","","outgoing, sociable"],
+[322,"catalyst","chất xúc tác (thúc đẩy hoặc tăng tốc cho một sự thay đổi, hành động…)","n","/ˈkætəlɪst/","C1","",""],
+[323,"coexistence","sự cùng tồn tại","n","/ˌkəʊɪɡˈzɪstəns/","C1","",""],
+[324,"collaborate","hợp tác","v","/kəˈlæbəreɪt/","C1","cooperate",""],
+[325,"compassionate","động lòng trắc ẩn","adj","/kəmˈpæʃənət/","C1","","uncompassionate"],
+[326,"compliment","khen ngợi","v","/ˈkɒmplɪmənt/","C1","praise, commend","criticize"],
+[327,"confine","giới hạn","v","/kənˈfaɪn/","C2","limit, restrict",""],
+[328,"countless","vô số, không đếm xuể","adj","/ˈkaʊntləs/","C1","innumerable, numberless",""],
+[329,"distinctive","đặc biệt, nổi bật","adj","/dɪˈstɪŋktɪv/","C1","unique, special","ordinary"],
+[330,"embrace","đón nhận, chấp nhận","v","/ɪmˈbreɪs/","C1","accept, adopt","reject"],
+[331,"inclusiveness","sự hoà nhập","n","/ɪnˈkluːsɪvnəs/","C1","",""],
+[332,"inefficient","không hiệu quả","adj","/ˌɪnɪˈfɪʃnt/","C1","","efficient"],
+[333,"intercultural","liên văn hóa","adj","/ˌɪntəˈkʌltʃərəl/","C1","",""],
+[334,"multiculturalism","chủ nghĩa đa văn hóa","n","/ˌmʌltiˈkʌltʃərəlɪzəm/","C1","",""],
+[335,"nurture","nuôi dưỡng, khuyến khích sự phát triển","v","/ˈnɜːtʃə(r)/","C1","foster",""],
+[336,"optimism","sự lạc quan","n","/ˈɒptɪmɪzəm/","C2","","pessimism"],
+[337,"perceive","nhìn nhận, hiểu được","v","/pəˈsiːv/","C1","understand",""],
+[338,"resilient","kiên cường","adj","/rɪˈzɪliənt/","C1","",""],
+[339,"self-determined","tự quyết, tự chủ","adj","/ˌself dɪˈtɜːmɪnd/","C1","",""],
+[340,"spontaneous","tự phát, ngẫu hứng, tự nhiên","adj","/spɒnˈteɪniəs/","C1","unplanned","planned"],
+[341,"undertake","thực hiện","v","/ˌʌndəˈteɪk/","C1","",""],
+[342,"absorption","sự hấp thụ","n","/əbˈzɔːpʃən/","C1","",""],
+[343,"adversity","nghịch cảnh","n","/ədˈvɜːsəti/","C1","",""],
+[344,"advocate","ủng hộ, biện hộ","v","/ˈædvəkeɪt/","C1","",""],
+[345,"affluent","giàu có","adj","/ˈæfluənt/","C1","prosperous, wealthy","poor"],
+[346,"audacity","sự táo bạo, gan dạ","n","/ɔːˈdæsəti/","C1","boldness, nerve","timidity"],
+[347,"biochemical","thuộc sinh hóa","adj","/ˌbaɪəʊˈkem.ɪ.kəl/","C2","",""],
+[348,"buzzword","từ thông dụng, thịnh hành","n","/ˈbʌzwɜːd/","C1","",""],
+[349,"contentment","sự mãn nguyện","n","/kənˈtent.mənt/","C1","satisfaction","dissatisfaction"],
+[350,"conviction","niềm tin mãnh liệt","n","/kənˈvɪk.ʃən/","C1","belief","acquittal"],
+[351,"directness","sự thẳng thắn","n","/dəˈrekt.nəs/","C1","",""],
+[352,"drastically","mạnh mẽ, đáng kể","adv","/ˈdræs.tɪ.kli/","C1","",""],
+[353,"eliminate","loại bỏ","v","/ɪˈlɪm.ɪ.neɪt/","C1","remove","include"],
+[354,"embody","hiện thân, biểu hiện","v","/ɪmˈbɒd.i/","C1","represent",""],
+[355,"exclusive","độc quyền, riêng biệt","adj","/ɪkˈskluː.sɪv/","C1","",""],
+[356,"incorporate","kết hợp, sáp nhập","v","/ɪnˈkɔː.pə.reɪt/","C2","",""],
+[357,"industrialization","sự công nghiệp hóa","n","/ɪnˌdʌs.tri.ə.laɪˈzeɪ.ʃən/","C1","",""],
+[358,"ingenuity","sự khéo léo, sáng tạo","n","/ˌɪn.dʒəˈnjuː.ə.ti/","C1","inventiveness",""],
+[359,"migration","sự di cư","n","/maɪˈɡreɪ.ʃən/","C1","",""],
+[360,"mutually","lẫn nhau","adv","/ˈmjuː.tʃuː.ə.li/","C1","","separately"],
+[361,"neurotransmitter","chất dẫn truyền thần kinh","n","/ˌnjʊə.rəʊ.trænzˈmɪ.tər/","C2","",""],
+[362,"paradoxically","một cách nghịch lý, nghịch lý thay","adv","/ˌpær.əˈdɒk.sɪ.kli/","C1","ironically","logically"],
+[363,"penalization","sự trừng phạt","n","/ˌpiː.nəl.aɪˈzeɪ.ʃən/","C1","punishment","reward"],
+[364,"polarize","chia rẽ, phân cực","v","/ˈpəʊ.lə.raɪz/","C1","",""],
+[365,"provoke","khiêu khích, kích động","v","/prəˈvəʊk/","C1","",""],
+[366,"purposeful","có mục đích, có ý chí","adj","/ˈpɜː.pəs.fəl/","C1","",""],
+[367,"rebellion","cuộc nổi loạn","n","/rɪˈbel.jən/","C1","uprising","obedience"],
+[368,"redefine","định nghĩa lại","v","/ˌriː.dɪˈfaɪn/","C1","",""],
+[369,"regeneration","sự tái sinh, phục hồi","n","/rɪˌdʒen.əˈreɪ.ʃən/","C1","renewal",""],
+[370,"sprawl","sự lan rộng (đô thị)","n","/sprɔːl/","C1","",""],
+[371,"suspicious","nghi ngờ","adj","/səˈspɪʃ.əs/","C1","doubtful","trusting"],
+[372,"sustained","bền vững, liên tục","adj","/səˈsteɪnd/","C1","continuous, prolonged",""],
+[373,"trajectory","quỹ đạo, tiến trình","n","/trəˈdʒek.tə.ri/","C1","",""],
+[374,"transcend","vượt lên trên, vượt quá","v","/træˈnsend/","C1","surpass, exceed","fall short"],
+[375,"truthfulness","tính trung thực","n","/ˈtruː.θ.fəl.nəs/","C1","honesty","deceit"],
+[376,"visionary","có tầm nhìn","adj","/ˈvɪʒ.ən.əri/","C1","","shortsighted"],
+[377,"adaptation","sự thích nghi, thích ứng","n","/ˌædæpˈteɪʃn/","C1","",""],
+[378,"apparel","quần áo","n","/əˈpærəl/","C1","clothing",""],
+[379,"autonomy","quyền tự chủ, sự tự chủ","n","/ɔːˈtɒnəmi/","C1","",""],
+[380,"bottleneck","điểm tắc nghẽn","n","/ˈbɒtlnek/","C1","",""],
+[381,"cohesion","sự gắn kết","n","/kəʊˈhiːʒn/","C1","",""],
+[382,"collaborate","hợp tác","v","/kəˈlæbəreɪt/","C1","cooperate",""],
+[383,"coordination","sự phối hợp","n","/kəʊˌɔːdɪˈneɪʃn/","C1","",""],
+[384,"directive","mang tính chỉ thị, chỉ đạo","adj","/dəˈrektɪv/","C1","",""],
+[385,"disadvantaged","thiệt thòi, khó khăn","adj","/ˌdɪsədˈvɑːntɪdʒd/","C1","deprived","advantaged, privileged"],
+[386,"disposable","dùng một lần","adj","/dɪˈspəʊzəbl/","C2","single-use","reusable"],
+[387,"enthusiast","người đam mê","n","/ɪnˈθjuːziæst/","C1","fan, devotee",""],
+[388,"hierarchical","có thứ bậc, thuộc về một hệ thống cấp bậc","adj","/ˌhaɪəˈrɑːkɪkl/","C2","",""],
+[389,"hierarchy","hệ thống cấp bậc","n","/ˈhaɪərɑːki/","C2","",""],
+[390,"incentive","sự khuyến khích, sự khích lệ","n","/ɪnˈsentɪv/","C2","motivation, encouragement, inducement","disincentive, discouragement"],
+[391,"indifferent","thờ ơ, vô tâm","adj","/ɪnˈdɪfrənt/","C2","uninterested, unconcerned","interested, concerned"],
+[392,"insoluble","không thể giải quyết","adj","/ɪnˈsɒljəbl/","C1","insolvable","solvable"],
+[393,"merchandise","hàng hóa","n","/ˈmɜːtʃəndaɪz/","C1","goods",""],
+[394,"mismatch","sự không phù hợp","n","/ˈmɪsmætʃ/","C1","",""],
+[395,"proactive","chủ động","adj","/prəʊˈæktɪv/","C1","","passive"],
+[396,"resolve","giải quyết","v","/rɪˈzɒlv/","C1","solve",""],
+[397,"rustle","tiếng xào xạc","n","/ˈrʌsl/","C1","",""],
+[398,"satisfactorily","một cách thỏa đáng","adv","/ˌsætɪsˈfæktərəli/","C1","acceptably","unsatisfactorily"],
+[399,"insignificant","không quan trọng","adj","/ˌɪnsɪɡˈnɪfɪkənt/","C1","trivial, minor","important, significant"],
+[400,"underlying","ngầm ẩn","adj","/ˌʌndəˈlaɪɪŋ/","C1","",""],
+[401,"vague","mơ hồ, không rõ ràng","adj","/veɪɡ/","C1","unclear","clear"],
+[402,"reflection","sự suy ngẫm, phản ánh","n","/rɪˈflekʃn/","C1","contemplation",""],
+[403,"delegate","ủy quyền","v","/ˈdelɪɡət/","C2","",""],
+[404,"delegation","sự phân công, ủy quyền","n","/ˌdelɪˈɡeɪʃn/","C1","",""],
+[405,"detrimental","có hại, bất lợi","adj","/ˌdetrɪˈmentl/","C2","harmful, damaging",""],
+[406,"heighten","nâng cao, tăng cường","v","/ˈhaɪtn/","C1","intensify","reduce, lessen"],
+[407,"itinerary","lộ trình, lịch trình","n","/aɪˈtɪnərəri/","C1","",""],
+[408,"notable","đáng kể, đáng chú ý","adj","/ˈnəʊtəbl/","C1","remarkable, striking","unremarkable"],
+[409,"paramount","tối quan trọng","adj","/ˈpærəmaʊnt/","C2","overriding, preponderant",""],
+[410,"philosophical","triết lý, bình thản","adj","/ˌfɪləˈsɒfɪkəl/","C1","",""],
+[411,"profound","sâu sắc, uyên thâm","adj","/prəˈfaʊnd/","C1","deep","superficial, shallow"],
+[412,"recipient","người nhận","n","/rɪˈsɪpiənt/","C1","receiver","giver"],
+[413,"resignation","sự từ chức","n","/ˌrezɪɡˈneɪʃn/","C1","",""],
+[414,"succumb","đầu hàng, không chống nổi","v","/səˈkʌm/","C2","yield, surrender","resist, overcome"],
+[415,"synthesis","sự tổng hợp","n","/ˈsɪnθəsɪs/","C1","",""],
+[416,"anticipation","sự chờ đợi, dự đoán","n","/ænˌtɪsɪˈpeɪʃn/","C2","expectation",""],
+[417,"drain","làm cạn kiệt, tiêu hao","v","/dreɪn/","C1","",""],
+[418,"elaborate","tỉ mỉ, chi tiết","adj","/ɪˈlæbərət/","C1","detailed, intricate","simple, basic"],
+[419,"hazard","nguy hiểm, rủi ro","n","/ˈhæzəd/","C1","danger, risk, peril","safety, security"],
+[420,"indispensable","không thể thiếu","adj","/ˌɪndɪˈspensəbl/","C2","essential, necessary, vital","unnecessary, optional, dispensable"],
+[421,"dismiss","bác bỏ","v","/dɪsˈmɪs/","C1","",""],
+[422,"encompass","bao gồm","v","/ɪnˈkʌmpəs/","C1","include","exclude"],
+[423,"essence","bản chất, cốt lõi","n","/ˈesns/","C2","nature, core",""],
+[424,"guerilla unit","đơn vị du kích","n","/ɡəˈrɪlə ˈjuːnɪt/","C1","",""],
+[425,"initiative","sáng kiến","n","/ɪˈnɪʃətɪv/","C1","",""],
+[426,"long-lasting","lâu dài, bền vững","adj","/ˌlɒŋ ˈlɑːstɪŋ/","C2","enduring","temporary, short-lived"],
+[427,"multicultural affair","sự kiện đa văn hóa","n","/ˌmʌltɪˈkʌltʃərəl əˈfeə(r)/","C1","",""],
+[428,"mutual learning","học hỏi lẫn nhau","n","/ˈmjuːtʃuəl ˈlɜːnɪŋ/","C1","",""],
+[429,"narrative","câu chuyện","n","/ˈnærətɪv/","C2","story, account",""],
+[430,"nutrition","dinh dưỡng","n","/njuˈtrɪʃn/","C1","",""],
+[431,"perseverance","sự kiên trì","n","/ˌpɜːsɪˈvɪərəns/","C2","persistence",""],
+[432,"uniqueness","sự độc đáo","n","/juːˈniːknəs/","C1","",""],
+[433,"unwavering","không lay chuyển, kiên định","adj","/ʌnˈweɪvərɪŋ/","C1","steadfast","wavering"],
+[434,"administrator","người quản trị; người quản lý","n","/ədˈmɪnɪstreɪtə(r)/","C1","manager",""],
+[435,"allocation","sự phân bổ","n","/ˌæləˈkeɪʃn/","C1","distribution",""],
+[436,"archive","lưu trữ; kho lưu trữ","n","/ˈɑːkaɪv/","C1","record",""],
+[437,"blockage","sự tắc nghẽn, trục trặc, vật cản trở","n","/ˈblɒkɪdʒ/","C1","obstruction","clearance"],
+[438,"congestion","ùn tắc","n","/kənˈdʒestʃən/","C1","jam",""],
+[439,"customised","tùy chỉnh","adj","/ˈkʌstəmaɪzd/","C1","personalized","standard"],
+[440,"density","mật độ, lưu lượng","n","/ˈdensəti/","C1","",""],
+[441,"evacuate","sơ tán","v","/ɪˈvækjueɪt/","C1","",""],
+[442,"hands-on","thực hành, thực tế","adj","/ˌhændz ˈɒn/","C1","practical","theoretical"],
+[443,"inaccuracy","sự không chính xác, thiếu chính xác","n","/ɪnˈækjərəsi/","C1","faultiness","correctness"],
+[444,"indigenous","bản địa","adj","/ɪnˈdɪdʒənəs/","C2","native","foreign"],
+[445,"interconnected","gắn liền với nhau","adj","/ˌɪntəkəˈnektɪd/","C2","connective","separate"],
+[446,"omit","bỏ sót","v","/əˈmɪt/","C1","leave out","include"],
+[447,"optimise","tối ưu hóa","v","/ˈɒptɪmaɪz/","C1","improve","worsen"],
+[448,"participatory","mang tính tham gia","adj","/pɑːˌtɪsɪˈpətəri/","C2","",""],
+[449,"pioneering","tiên phong","adj","/ˌpaɪəˈnɪərɪŋ/","C2","",""],
+[450,"preservation","bảo tồn","n","/ˌprezəˈveɪʃn/","C1","conservation","destruction"],
+[451,"prioritise","ưu tiên","v","/praɪˈɒrɪtaɪz/","C1","",""],
+[452,"rediscover","khám phá lại, tìm lại","v","/ˌriːdɪˈskʌvə(r)/","C2","",""],
+[453,"rehydrate","bù nước","v","/ˌriːˈhaɪdreɪt/","C2","",""],
+[454,"reinterpret","diễn giải lại","v","/ˌriːɪnˈtɜːprɪt/","C2","",""],
+[455,"relevance","sự liên quan","n","/ˈreləvəns/","C1","connection","irrelevance"],
+[456,"reliability","độ tin cậy","n","/rɪˌlaɪəˈbɪləti/","C1","trustworthiness","falseness"],
+[457,"traffic bottleneck","điểm nghẽn giao thông","n","/ˈtræfɪk ˈbɒtlnek/","C1","",""],
+[458,"traffic-mapping","lập bản đồ giao thông","n","/ˈtræfɪk ˈmæpɪŋ/","C2","",""],
+[459,"unforeseen","không lường trước","adj","/ˌʌnfɔːˈsiːn/","C1","unexpected","predicted"],
+[460,"unreliable","không đáng tin cậy","adj","/ˌʌnrɪˈlaɪəbl/","C1","untrustworthy","responsible"],
+[461,"visually-impaired","khiếm thị","adj","/ˈvɪʒuəli ɪmˈpeəd/","C1","",""],
+[462,"undeterred","không nản lòng, không bị ngăn cản","adj","/ˌʌndɪˈtɜːd/","C1","",""],
+[463,"sparsely","thưa thớt, ít ỏi","adv","/ˈspɑːsli/","C1","","heavily"],
+[464,"submission","bài nộp, sự đệ trình","n","/səbˈmɪʃn/","C1","",""],
+[465,"self-sufficient","tự túc, tự lập, tự cung tự cấp","adj","/ˌself səˈfɪʃnt/","C1","independent",""],
+[466,"patriotism","lòng yêu nước","n","/ˈpætriətɪzəm/","C1","nationalism",""],
+[467,"demographic","(thuộc) nhân khẩu học","adj","/ˌdeməˈɡræfɪk/","C1","",""],
+[468,"deteriorate","xấu đi, tệ đi","v","/dɪˈtɪəriəreɪt/","C1","worsen","improve"],
+[469,"degenerative","thoái hóa","adj","/dɪˈdʒenərətɪv/","C2","",""],
+[470,"degrade","làm suy thoái, làm hư hại","v","/dɪˈɡreɪd/","C1","","promote"],
+[471,"counter-urbanisation","đô thị hóa ngược (di cư từ thành phố về nông thôn)","n","/ˌkaʊntər ˌɜːbənaɪˈzeɪʃn/","C2","",""],
+[472,"amplify","khuếch đại, làm tăng thêm","v","/ˈæmplɪfaɪ/","C1","exaggerate","weaken"],
+[473,"well-being","sự khoẻ mạnh và hạnh phúc","n","/ˈwel biːŋ/","C1","",""],
+[474,"posture","tư thế","n","/ˈpɒstʃə(r)/","C1","",""],
+[475,"nutritious","bổ dưỡng","adj","/njuːˈtrɪʃəs/","C1","nourishing, wholesome","unwholesome, unhealthy"],
+[476,"arise","nảy sinh, xuất hiện (vấn đề, khó khăn…)","v","/əˈraɪz/","C1","occur",""],
+[477,"utilisation","sự sử dụng, sự tận dụng","n","/ˌjuːtəlaɪˈzeɪʃn/","C1","use",""],
+[478,"renovate","cải tạo, tu sửa","v","/ˈrenəveɪt/","C1","refurbish",""],
+[479,"fulfilment","sự thỏa mãn","n","/fʊlˈfɪlmənt/","C2","satisfaction, contentment","dissatisfaction"],
+[480,"impulsively","một cách bốc đồng, hấp tấp","adv","/ɪmˈpʌlsɪvli/","C1","impetuously, rashly","deliberately, thoughtfully"],
+[481,"enrich","làm phong phú, cải thiện","v","/ɪnˈrɪtʃ/","C1","enhance, improve","weaken"],
+[482,"dissimilar","khác nhau","adj","/dɪˈsɪmɪlə(r)/","C1","different","similar"],
+[483,"violation","sự vi phạm","n","/ˌvaɪəˈleɪʃn/","C1","infraction, infringement","compliance"],
+[484,"gig economy","nền kinh tế tự do","n","/ˈɡɪɡ ɪkɒnəmi/","C1","",""],
+[485,"harmonious","hài hòa","adj","/hɑːˈməʊniəs/","C1","",""],
+[486,"heritage","di sản","n","/ˈherɪtɪdʒ/","C1","",""],
+[487,"exploitation","sự bóc lột","n","/ˌeksplɔɪˈteɪʃn/","C1","",""],
+[488,"deficiency","sự thiếu hụt","n","/dɪˈfɪʃnsi/","C1","shortage, inadequacy, insufficiency","sufficiency, adequacy, abundance"],
+[489,"adaptive","có khả năng tự thích nghi, thích ứng","adj","/əˈdæptɪv/","C1","",""],
+[490,"blur","làm mờ đi","v","/blɜː(r)/","C1","obscure","clarify"],
+[491,"vocational","thuộc về nghề nghiệp","adj","/vəʊˈkeɪʃənl/","C1","",""],
+[492,"transparently","một cách minh bạch, rõ ràng","adv","/trænsˈpærəntli/","C1","clearly","unclearly"],
+[493,"regain","lấy lại, giành lại","v","/rɪˈɡeɪm/","C1","",""],
+[494,"reliant","dựa dẫm, phụ thuộc vào","adj","/rɪˈlaɪənt/","C2","dependent","independent"],
+[495,"literacy","khả năng đọc viết","n","/ˈlɪtərəsi/","C1","","illiteracy"],
+[496,"misuse","lạm dụng, sử dụng sai","v","/ˌmɪsˈjuːs/","C1","misapply",""],
+[497,"overwhelmed","bị choáng ngợp, bị quá tải","adj","/ˌəʊvəˈwelmd/","C1","",""],
+[498,"fatigue","sự mệt mỏi, kiệt sức","n","/fəˈtiːɡ/","C1","exhaustion, tiredness","energy, vigor"],
+[499,"depleted","bị suy giảm, cạn kiệt","adj","/dɪˈpliːtɪd/","C1","exhausted","full, abundant"],
+[500,"digital detox","giải độc kỹ thuật số","n","/ˌdɪdʒɪtl ˈdiːtɒks/","C1","",""],
+[501,"bicultural","song văn hóa, thuộc về hai nền văn hóa","adj","/ˌbaɪˈkʌltʃər.əl/","C1","",""],
+[502,"changemaker","người tạo thay đổi","n","/ˈtʃeɪndʒˌmeɪkə/","C1","",""],
+[503,"compassion","lòng trắc ẩn","n","/kəmˈpæʃn/","C1","",""],
+[504,"complexity","sự phức tạp","n","/kəmˈpleksəti/","C1","intricacy, complication","simplicity"],
+[505,"curate","tuyển chọn","v","/kjʊəˈreɪt/","C1","",""],
+[506,"inadequacy","sự thiếu hụt, không đủ","n","/ɪnˈædɪkwəsi/","C1","insufficiency","adequacy, sufficiency"],
+[507,"integrative","có tính tích hợp","adj","/ˈɪntɪɡrətɪv/","C1","",""],
+[508,"obsession","sự ám ảnh, nỗi ám ảnh","n","/əbˈseʃn/","C1","",""],
+[509,"overlook","bỏ sót, bỏ qua","v","/ˌəʊvəˈlʊk/","C1","ignore, neglect, disregard, miss","notice"],
+[510,"pernicious","độc hại, nguy hiểm","adj","/pəˈnɪʃəs/","C1","harmful, damaging","beneficial, harmless"],
+[511,"redevelopment","tái phát triển, sự quy hoạch lại","n","/ˌriːdɪˈveləpmənt/","C1","",""],
+[512,"regulator","cơ quan quản lý","n","/ˈreɡjuleɪtə(r)/","C1","",""],
+[513,"substantial","đáng kể, lớn","adj","/səbˈstænʃl/","C1","significant, considerable","minor"],
+[514,"watchdog","cơ quan giám sát","n","/ˈwɒtʃdɒɡ/","C1","",""],
+[515,"conformity","sự rập khuôn","n","/kənˈfɔːmɪti/","C1","",""],
+[516,"devastating","tàn phá","adj","/ˈdevəsteɪtɪŋ/","C1","destructive",""],
+[517,"disparity","sự chênh lệch","n","/dɪˈspærəti/","C1","",""],
+[518,"grueling","cực kỳ mệt mỏi","adj","/ˈɡruːəlɪŋ/","C1","exhausting",""],
+[519,"indigenous","bản địa","adj","/ɪnˈdɪdʒənəs/","C1","native",""],
+[520,"inseparable","không thể tách rời","adj","/ɪnˈseprəbl/","C1","","separable"],
+[521,"optimal","tối ưu","adj","/ˈɒptɪməl/","C1","optimum",""],
+[522,"proximity","sự gần gũi","n","/prɒkˈsɪməti/","C1","closeness",""],
+[523,"reconfiguration","sự tái cấu trúc","n","/ˌriːkɒnfɪɡəˈreɪʃn/","C2","",""],
+[524,"revolutionize","cách mạng hóa","v","/ˌrevəˈluːʃənaɪz/","C1","",""],
+[525,"transformative","mang tính thay đổi lớn","adj","/trænsˈfɜːmətɪv/","C1","",""],
+[526,"overstate","phóng đại","v","/ˌəʊvəˈsteɪt/","C1","exaggerate","understate"],
+[527,"persuasive","thuyết phục","adj","/pəˈsweɪsɪv/","C1","convincing","unconvincing"],
+[528,"profitable","có lợi nhuận","adj","/ˈprɒfɪtəbl/","C1","lucrative, successful","unprofitable"],
+[529,"promotion","sự quảng bá","n","/prəˈməʊʃn/","C1","",""],
+[530,"rebound","phục hồi, bật lại","v","/ˌriːˈbaʊnd/","C1","recover, bounce back",""],
+[531,"allowance","tiền trợ cấp","n","/əˈlaʊəns/","C1","",""],
+[532,"appealingly","một cách hấp dẫn, lôi cuốn","adv","/əˈpiːlɪŋli/","C1","attractively, engagingly, charmingly, enticingly","unattractively, repulsively, unpleasantly"],
+[533,"attentiveness","sự chú ý, tập trung","n","/əˈtentɪvnəs/","C1","concentration","distraction"],
+[534,"counterproductive","phản tác dụng","adj","/ˌkaʊntəprəˈdʌktɪv/","C1","",""],
+[535,"curate","lựa chọn, sắp xếp và trình bày một cách cẩn thận, chu đáo, có chủ ý","v","/kjʊəˈreɪt/","C1","",""],
+[536,"disadvantaged","hoàn cảnh khó khăn, thiệt thòi","adj","/ˌdɪsədˈvɑːntɪdʒd/","C1","underprivileged, deprived","privileged, advantaged"],
+[537,"discard","vứt đi, loại bỏ (vật không dùng nữa)","v","/dɪˈskɑːd/","C1","throw away, get rid of","keep, retain"],
+[538,"disposability","tính dùng một lần","n","/dɪˌspəʊzəˈbɪləti/","C1","",""],
+[539,"distorted","bị bóp méo, xuyên tạc","adj","/dɪˈstɔːtɪd/","C1","",""],
+[540,"embrace","đón nhận","v","/ɪmˈbreɪs/","C1","accept","reject"],
+[541,"engaging","hấp dẫn, thu hút","adj","/ɪnˈɡeɪdʒɪŋ/","C1","appealing, captivating","boring, unappealing"],
+[542,"enrich","làm giàu thêm, làm phong phú","v","/ɪnˈrɪtʃ/","C1","",""],
+[544,"practicality","tính thực tế, khả năng áp dụng trong đời sống","n","/ˌpræktɪˈkæləti/","C1","feasibility","impracticality"],
+[545,"privilege","đặc quyền","n","/ˈprɪvɪlɪdʒ/","C1","",""],
+[546,"provoke","kích động hoặc gây ra (phản ứng, cảm xúc…)","v","/prəˈvəʊk/","C2","",""],
+[547,"radically","một cách hoàn toàn, triệt để","adv","/ˈrædɪkli/","C1","completely",""],
+[548,"reinforce","củng cố, tăng cường, làm mạnh thêm","v","/ˌriːɪnˈfɔːs/","C2","strengthen","weaken"],
+[549,"reluctant","miễn cưỡng","adj","/rɪˈlʌktənt/","C1","unwilling","willing, eager"],
+[550,"reputable","có uy tín","adj","/ˈrepjʊtəbl/","C1","","disreputable"],
+[551,"artisan","thợ thủ công; được làm thủ công","n","/ˈɑː.tɪ.zæn/","C1","craftsperson, tradesperson, craftsman, craftswoman; handcrafted, handmade","industrial worker, amateur, consumer; mass-produced, industrial, machine-made"],
+[552,"craftsmanship","tay nghề thủ công","n","/ˈkrɑːftsmənʃɪp/","C2","workmanship, skill, artistry","clumsiness, poor workmanship, incompetence"],
+[553,"negligible","không đáng kể, siêu nhỏ","adj","/ˈneɡlɪdʒəbl/","C1","insignificant, trivial, minimal","substantial, significant, considerable"],
+[554,"eligible","đủ tư cách, đủ điều kiện","adj","/ˈelɪdʒəbl/","C1","qualified, entitled, suitable","disqualified, unqualified"],
+[555,"cultivate","nuôi dưỡng; canh tác, trồng trọt","v","/ˈkʌl.tɪ.veɪt/","C1","develop, foster, nurture","neglect, ignore, abandon"],
+[556,"consistently","một cách nhất quán, luôn luôn","adv","/kənˈsɪs.tənt.li/","C2","steadily, reliably, regularly","sporadically, irregularly, erratically"],
+[557,"harsh","khắc nghiệt, thô ráp","adj","/hɑːʃ/","C1","severe, brutal, strict","mild, gentle"],
+[569,"aggregate","tập hợp lại, kết hợp lại; tổng số, khối tập hợp","v","/ˈæɡrɪɡət/","C1","combine, collect, compile; total, sum, whole","separate, disperse, divide; part, fraction, component"],
+[570,"degradation","sự suy thoái; sự xuống cấp, sự giảm giá trị","n","/ˌdeɡ.rəˈdeɪ.ʃən/","C1","deterioration, decline, debasement","improvement, enhancement, elevation"],
+[571,"recipient","người nhận","n","/rɪˈsɪpiənt/","C1","beneficiary, addressee","sender, donor, giver"],
+[572,"regulatory","thuộc quản lý","adj","/ˌreɡ.jə.leɪ.tər.i/","C1","supervisory, governing","unregulated, deregulated"],
+[573,"influx","sự tràn vào","n","/ˈɪn.flʌks/","C2","inflow, arrival, rush","outflow, exodus, departure"],
+[574,"enforcement","sự thực thi (luật pháp)","n","/ɪnˈfɔːsmənt/","C1","implementation, execution, application","neglect, noncompliance, abandonment"],
+[575,"stringent","nghiêm ngặt, khắt khe","adj","/ˈstrɪndʒənt/","C1","strict, rigorous, firm","lenient, lax, flexible"],
+[576,"rationale","lý do căn bản, cơ sở","n","/ˌræʃ.əˈnɑːl/","C1","basis, justification, reasoning","contradiction, refutation, nonsense"],
+[577,"incentive","sự khuyến khích, động lực","n","/ɪnˈsen.tɪv/","C2","motivation, inducement, stimulus","disincentive, deterrent"],
+[578,"curate","quản lý, chọn lọc (nội dung, hiện vật); phó tế, giáo sĩ trợ tá","v","/ˈkjʊərət/","C1","organize, select, manage","neglect, ignore, mismanage"],
+[579,"algorithmic","thuộc về thuật toán","adj","/ˌælɡəˈrɪðmɪk/","C2","procedural","random"],
+[580,"elusive","khó nắm bắt, khó xác định, khó đạt được","adj","/ɪˈluːsɪv/","C2","hard to find, catch, evasive, slippery","accessible, attainable, obvious"],
+[581,"interpret","giải thích, phiên dịch","v","/ɪnˈtɜː.prɪt/","C1","explain, understand, translate","misinterpret, misunderstand"],
+[582,"simultaneously","đồng thời, cùng lúc","adv","/ˌsɪməlˈteɪniəsli/","C1","concurrently, at the same time, synchronously","sequentially, separately, individually"],
+[583,"downplay","xem nhẹ; hạ thấp tầm quan trọng","v","/ˌdaʊnˈpleɪ/","C1","minimize, understate","emphasize, highlight"],
+[584,"unintentionally","vô tình, không cố ý","adv","/ˌʌnɪnˈtenʃənəli/","C1","accidentally, inadvertently","deliberately"],
+[585,"amplify","khuếch đại, làm to lên (âm thanh); tăng cường, làm mạnh hơn (quy mô, cường độ, sức ảnh hưởng…); mở rộng, thêm chi tiết hơn","v","/ˈæmplɪfaɪ/","C1","increase, intensify, magnify, boost","reduce, diminish, weaken"],
+[586,"resonate","vang dội; cộng hưởng, tạo sự đồng cảm","v","/ˈrezəneɪt/","C1","echo, connect, reverberate","alienate, fade, fall flat"],
+[587,"validation","sự xác nhận, sự phê chuẩn; sự công nhận","n","/ˌvæliˈdeɪʃn/","C1","confirmation, verification, approval","rejection, denial, refutation"],
+[588,"impede","cản trở, làm","v","/ɪmˈpiːd/","C1","hinder, obstruct, hamper","facilitate, assist, promote"],
+[589,"exacerbate","làm trầm trọng thêm","v","/ɪɡˈzæs.ə.beɪt/","C1","worsen, aggravate, intensify","improve, alleviate, ease"],
+[590,"societal","thuộc về xã hội","adj","/səˈsaɪətl/","C1","popular","individual, personal"],
+[591,"systematically","một cách có hệ thống","adv","/ˌsɪstəˈmætɪkli/","C1","methodically, consistently","randomly"],
+[592,"consensus","sự đồng thuận, nhất trí","n","/kənˈsensəs/","C1","agreement, unanimity, accord","disagreement, dissensus, discord"],
+[593,"biosphere","sinh quyền","n","/ˈbaɪ.əʊ.sfɪər/","C1","ecosystem, environment, natural world","vacuum, artificial environment, void"],
+[594,"credibility","độ tin cậy","n","/ˌkred.əˈbɪl.ə.ti/","C1","trustworthiness, reliability, believability","unreliability, incredibility, untrustworthiness"],
+[595,"circulation","sự lưu hành; tổng số phát hành","n","/ˌsɜː.kjəˈleɪ.ʃən/","C2","distribution, dissemination, spread","restriction, containment, limitation"],
+[596,"defining","mang tính định nghĩa, then chốt, quyết định","adj","/dɪˈfaɪ.nɪŋ/","C1","characteristic, decisive, fundamental, essential","minor, vague, insignificant"],
+[597,"erode","xói mòn; bào mòn, làm yếu dần","v","/ɪˈrəʊd/","C1","wear away, corrode, undermine","build up, strengthen, preserve"],
+[598,"companionship","tình bạn, sự bầu bạn","n","/kəmˈpæn.jən.ʃɪp/","C1","friendship, fellowship, company","loneliness, isolation, solitude"],
+[599,"accumulate","tích lũy; tích tụ","v","/əˈkjuː.mjə.leɪt/","C2","gather, collect, amass","disperse, scatter, distribute"],
+[600,"metabolism","sự trao đổi chất","n","/məˈtæbəlɪzəm/","C1","metabolic process, biochemical activity, energy conversion","inactivity, stagnation, nonmetabolic state"]
+];
+
+// Build word objects
+const WORDS = RAW.map(r => ({
+  num: r[0], word: r[1], vi: r[2], pos: r[3],
+  ipa: r[4], level: r[5], syn: r[6], ant: r[7],
+  known: false
+}));
+
+// State
+let filtered = [...WORDS];
+let flashIdx = 0;
+let levelFilter = 'all';
+let knownFilter = 'all';
+let searchQ = '';
+let quizCorrect = 0;
+let quizTotal = 0;
+let quizAnswered = false;
+let currentMode = 'flash';
+
+// ======== FILTERS ========
+function applyFilters() {
+  searchQ = document.getElementById('search').value.toLowerCase();
+  filtered = WORDS.filter(w => {
+    const lv = levelFilter === 'all' || w.level === levelFilter;
+    const kn = knownFilter === 'all' || (knownFilter === 'known' ? w.known : !w.known);
+    const sr = !searchQ || w.word.toLowerCase().includes(searchQ) || w.vi.toLowerCase().includes(searchQ);
+    return lv && kn && sr;
+  });
+  flashIdx = 0;
+  document.getElementById('showing').textContent = filtered.length;
+  if (currentMode === 'flash') renderFlash();
+  else if (currentMode === 'list') renderList();
+  else renderQuiz();
+}
+
+function filterLevel(lv, btn) {
+  levelFilter = lv;
+  document.querySelectorAll('.btn').forEach(b => {
+    if (['Tất cả','C1','C2'].includes(b.textContent.trim())) b.classList.remove('on');
+  });
+  btn.classList.add('on');
+  applyFilters();
+}
+
+function filterKnown(k, btn) {
+  knownFilter = knownFilter === k ? 'all' : k;
+  btn.classList.toggle('on');
+  applyFilters();
+}
+
+function shuffleWords() {
+  filtered.sort(() => Math.random() - 0.5);
+  flashIdx = 0;
+  if (currentMode === 'flash') renderFlash();
+  else if (currentMode === 'list') renderList();
+}
+
+function resetKnown() {
+  WORDS.forEach(w => w.known = false);
+  updateKnownUI();
+  applyFilters();
+}
+
+function updateKnownUI() {
+  const cnt = WORDS.filter(w => w.known).length;
+  document.getElementById('known-count').textContent = cnt;
+  const pct = Math.round(cnt / WORDS.length * 100);
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('pfill').style.width = pct + '%';
+}
+
+// ======== FLASHCARD MODE ========
+function renderFlash() {
+  const card = document.getElementById('flashcard');
+  card.classList.remove('flipped');
+  if (!filtered.length) {
+    document.getElementById('ff-word').textContent = '—';
+    document.getElementById('fc-counter').textContent = '0 / 0';
+    return;
+  }
+  const w = filtered[flashIdx];
+  document.getElementById('fc-counter').textContent = `${flashIdx + 1} / ${filtered.length}`;
+  document.getElementById('ff-word').textContent = w.word;
+  document.getElementById('ff-pos').textContent = w.pos;
+  document.getElementById('ff-ipa').textContent = w.ipa;
+  const lvEl = document.getElementById('ff-level');
+  lvEl.innerHTML = `<span class="flash-level ${w.level.startsWith("C2")?"lv-c2":w.level.startsWith("C1")?"lv-c1":"lv-b"}</span>`;
+  document.getElementById('fb-vi').textContent = w.vi;
+  document.getElementById('fb-syn').textContent = w.syn || '—';
+  document.getElementById('fb-ant').textContent = w.ant || '—';
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function prevCard() {
+  if (!filtered.length) return;
+  flashIdx = (flashIdx - 1 + filtered.length) % filtered.length;
+  renderFlash();
+}
+
+function nextCard() {
+  if (!filtered.length) return;
+  flashIdx = (flashIdx + 1) % filtered.length;
+  renderFlash();
+}
+
+function rateCard(isKnown) {
+  if (!filtered.length) return;
+  filtered[flashIdx].known = isKnown;
+  const orig = WORDS.find(w => w.word === filtered[flashIdx].word && w.num === filtered[flashIdx].num);
+  if (orig) orig.known = isKnown;
+  updateKnownUI();
+  nextCard();
+}
+
+// ======== LIST MODE ========
+function renderList() {
+  const grid = document.getElementById('list-grid');
+  if (!filtered.length) { grid.innerHTML = '<div class="empty">Không tìm thấy từ nào.</div>'; return; }
+  grid.innerHTML = filtered.map((w,i) => `
+    <div class="list-row">
+      <span class="list-num">${w.num}</span>
+      <span class="list-word">${w.word} <span style="font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);font-weight:400">${w.pos}</span></span>
+      <span class="list-vi">${w.vi}</span>
+      <span class="list-ipa">${w.ipa}</span>
+      <span class="list-syn">${w.syn || ''}</span>
+      <span style="display:flex;align-items:center;gap:.4rem">
+        <span class="flash-level lv-${w.level.toLowerCase()}" style="font-size:.6rem;padding:.15rem .5rem">${w.level}</span>
+        <span class="known-dot ${w.known?'yes':''}" title="Đánh dấu thuộc" onclick="toggleKnown(${i})"></span>
+      </span>
+    </div>
+  `).join('');
+}
+
+function toggleKnown(idx) {
+  filtered[idx].known = !filtered[idx].known;
+  const orig = WORDS.find(w => w.word === filtered[idx].word && w.num === filtered[idx].num);
+  if (orig) orig.known = filtered[idx].known;
+  updateKnownUI();
+  renderList();
+}
+
+// ======== QUIZ MODE ========
+function renderQuiz() {
+  if (filtered.length < 4) {
+    document.getElementById('q-opts').innerHTML = '<div class="empty">Cần ít nhất 4 từ để làm quiz.</div>';
+    return;
+  }
+  const w = filtered[Math.floor(Math.random() * filtered.length)];
+  document.getElementById('q-word').textContent = w.word;
+  document.getElementById('q-ipa').textContent = w.ipa;
+  document.getElementById('q-pos').textContent = w.pos;
+
+  // 4 options
+  const wrongs = WORDS.filter(x => x.word !== w.word).sort(() => Math.random() - .5).slice(0,3);
+  const opts = [w, ...wrongs].sort(() => Math.random() - .5);
+
+  document.getElementById('q-opts').innerHTML = opts.map((o,i) => `
+    <button class="qopt" onclick="checkQuiz(this,'${o.word}','${w.word}')">${o.vi}</button>
+  `).join('');
+  document.getElementById('q-result').textContent = '';
+  document.getElementById('q-result').className = 'quiz-result';
+  document.getElementById('q-next').style.display = 'none';
+  quizAnswered = false;
+}
+
+function checkQuiz(btn, chosen, correct) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  quizTotal++;
+  const allOpts = document.querySelectorAll('.qopt');
+  allOpts.forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    document.getElementById('q-result').textContent = '✓ Chính xác!';
+    quizCorrect++;
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('q-result').textContent = `✗ Sai! Đáp án: "${WORDS.find(w=>w.word===correct)?.vi}"`;
+    document.getElementById('q-result').classList.add('bad');
+  }
+  document.getElementById('q-correct').textContent = quizCorrect;
+  document.getElementById('q-total').textContent = quizTotal;
+  document.getElementById('q-next').style.display = 'inline-block';
+}
+
+function nextQuiz() { renderQuiz(); }
+
+// ======== MODE SWITCHING ========
+function switchMode(mode, el) {
+  currentMode = mode;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('m-flash').style.display = mode === 'flash' ? 'block' : 'none';
+  document.getElementById('m-list').style.display = mode === 'list' ? 'block' : 'none';
+  document.getElementById('m-quiz').style.display = mode === 'quiz' ? 'block' : 'none';
+  if (mode === 'flash') renderFlash();
+  else if (mode === 'list') renderList();
+  else renderQuiz();
+}
+
+// ======== KEYBOARD ========
+document.addEventListener('keydown', e => {
+  if (currentMode !== 'flash') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextCard(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevCard(); }
+  else if (e.key === 'f' || e.key === 'F') flipCard();
+  else if (e.key === '1') rateCard(false);
+  else if (e.key === '3') rateCard(true);
+});
+
+// INIT - wrap in DOMContentLoaded to ensure DOM is ready
+function init() {
+  document.getElementById('total-count').textContent = WORDS.length;
+  document.getElementById('showing').textContent = WORDS.length;
+  renderFlash();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
